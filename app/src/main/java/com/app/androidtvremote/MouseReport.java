@@ -5,8 +5,6 @@ public class MouseReport {
     public static final byte[] reportData = new byte[4];
 
     public static byte[] getReport(boolean left, boolean right, boolean middle, int x, int y, int wheel) {
-        //No need to fill with zero now
-//        Arrays.fill(keyboardData, (byte) 0);
 
         int buttons = ((left ? 1 : 0) | (right ? 2 : 0) | (middle ? 4 : 0));
         reportData[0] = (byte) buttons;

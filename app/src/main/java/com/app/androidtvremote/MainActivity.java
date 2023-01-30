@@ -74,7 +74,7 @@ import java.util.List;
 import java.util.Set;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
-    private static final String TAG = "BluetoothTest";
+    private static final String TAG = "AndroidTVRemote";
     private static final int REQUEST_CODE_BT_DEVICE_SELECTED = 1;
     static final int MESSAGE_FROM_SCAN_THREAD = 4;
     private BluetoothManager bluetoothManager;
@@ -99,7 +99,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu, menu);
         MenuItem item = menu.findItem(R.id.item_connect);
         item.setActionView(R.layout.switch_item);
@@ -109,36 +108,17 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         return true;
     }
 
-//    @Override
-//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-//        System.out.println(item.getItemId());
-//        switch(item.getItemId()){
-//            case R.id.swtConnect2:
-//                System.out.println("swtConnect2");
-//                return true;
-//            default:
-//                return super.onOptionsItemSelected(item);
-//        }
-//    }
 
     @Override
     @SuppressLint({"MissingPermission", "ClickableViewAccessibility"})
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        //Hide the Action bar
-//        Objects.requireNonNull(this.getSupportActionBar()).hide();
-
-
         bluetoothManager = getSystemService(BluetoothManager.class);
         bluetoothAdapter = bluetoothManager.getAdapter();
         vibrator = getSystemService(Vibrator.class);
-//        companionDeviceManager = getSystemService(CompanionDeviceManager.class);
-
         launcherEnableBluetooth = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), activityResult -> {
-//            debug("bluetooth enabled?" + activityResult.getResultCode());
-            if (activityResult.getResultCode() == -1) { // enabled
+            if (activityResult.getResultCode() == -1) {
                 populateBondedDevices();
             } else {
                 Toast.makeText(MainActivity.this, "Bluetooth not enabled, exiting now.", Toast.LENGTH_LONG).show();
@@ -146,30 +126,14 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             }
         });
 
-//        if (!bluetoothAdapter.isEnabled()) {
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S &&
-//                    ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
-//                ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.BLUETOOTH_CONNECT}, 1);
-//            }
-//            launcherEnableBluetooth.launch(new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE));
-//        } else {
-//            populateBondedDevices();
-//        }
-
         btnCurLeft = findViewById(R.id.cur_left);
         btnCurClick = findViewById(R.id.cur_middle);
         btnCurRight = findViewById(R.id.cur_right);
         swtConnectMouse = findViewById(R.id.swtConnectMouse);
         swtConnectMouse.setOnClickListener(this::connectMouseAction);
-
         txtOut = findViewById(R.id.txtOut);
-//        txtOut.setMaxLines(40);
-
         txtInput = findViewById(R.id.txtInput);
         txtInput.setEnabled(false);
-
-//        Button btnPair = findViewById(R.id.btnPair);
-//        btnPair.setOnClickListener(this::pairBtnAction);
 
         seekBar=findViewById(R.id.seekBar);
         seekBar.setMin(1);
@@ -179,7 +143,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         assignButtonActions();
 
-//        testNotification();
     }
 
     private void createUIHandler() {
@@ -270,29 +233,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     }
 
     private void pairBtnAction(View v) {
-        //                ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.BLUETOOTH_SCAN}, 1);
-
-//                startBluetoothDiscovery();
-//                connectGATT();
-//                boolean bonded = bluetoothAdapter.getRemoteDevice("AC:ED:5C:63:FF:41").createBond();
-//                debug("bonded=" + bonded);
-
         startBluetoothLEAdvertise();
-
-
-//                for (ParcelUuid parcelUuid : getSelectedBluetoothDevice().getUuids()) {
-//                    debug(parcelUuid.toString());
-//                }
-
-//                startBluetoothLEScan();
-
-//                openGattServer();
-
-//        companionPair();
     }
 
     private void connectSwitchAction(View v) {
-//        debug("connectSwitchAction " + swtConnect.isChecked());
         if (swtConnect.isChecked()) {
             startService();
         } else {
@@ -335,14 +279,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private void debug(String msg) {
         Log.e(TAG, "------------------------- " + msg);
         txtOut.setText(msg + "\n" + txtOut.getText());
-//        txtOut.append("\n", 0, 1);
-//        txtOut.append(msg, 0, msg.length());
-
-//        if (txtOut.getLineCount() >= txtOut.getMaxLines()) {
-//            txtOut.setText("");
-//        }
-//        txtOut.append(msg + "\n");
-
     }
 
     private void populateBondedDevices() {
@@ -356,8 +292,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         if (bondedDevices.size() > 0) {
             for (BluetoothDevice device : bondedDevices) {
                 spinnerArray.add(new BondedDevice(device));
-//                debug(device.getName() + " MajorDeviceClass=" + device.getBluetoothClass().getMajorDeviceClass());
-//                debug(device.getName() + " DeviceClass=" + device.getBluetoothClass().getDeviceClass());
             }
         }
         ArrayAdapter<BondedDevice> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, spinnerArray);
@@ -384,7 +318,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         return this.getPreferences(Context.MODE_PRIVATE);
     }
 
-    //    @SuppressLint("MissingPermission")
     private void startBluetoothLEAdvertise() {
         AdvertiseCallback advertiseCallback = new AdvertiseCallback() {
             @Override
@@ -404,29 +337,16 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 .setTxPowerLevel(AdvertiseSettings.ADVERTISE_TX_POWER_MEDIUM)
                 .setConnectable(true)
                 .setTimeout(0)
-//                .setAdvertiseMode(AdvertiseSettings.ADVERTISE_MODE_BALANCED)
                 .setAdvertiseMode(AdvertiseSettings.ADVERTISE_MODE_LOW_LATENCY)
                 .build();
 
-
-//        byte[] mfData=hexStringToByteArray("0201");
-
         AdvertiseData advertiseData = new AdvertiseData.Builder()
-//                .setIncludeTxPowerLevel(true)
                 .setIncludeDeviceName(true)
-//                .addServiceUuid(Constants.DIS_UUID)
-//                .addServiceUuid(Constants.HID_UUID)
                 .addServiceUuid(Constants.HOGP_UUID)
-//                .addServiceUuid(Constants.BAS_UUID)
                 .build();
 
         AdvertiseData scanResult = new AdvertiseData.Builder()
-//                .setIncludeTxPowerLevel(true)
                 .setIncludeDeviceName(true)
-//                .addServiceUuid(Constants.DIS_UUID)
-//                .addServiceUuid(Constants.HID_UUID)
-//                .addServiceUuid(Constants.HOGP_UUID)
-//                .addServiceUuid(Constants.BAS_UUID)
                 .build();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S &&
@@ -434,7 +354,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.BLUETOOTH_ADVERTISE}, 1);
         }
         bluetoothLeAdvertiser.startAdvertising(advertiseSettings, advertiseData, scanResult, advertiseCallback);
-//        bluetoothLeAdvertiser.startAdvertising(advertiseSettings, advertiseData, advertiseCallback);
     }
 
     @SuppressLint("MissingPermission")
@@ -445,18 +364,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             @Override
             public void onScanResult(int callbackType, ScanResult result) {
                 super.onScanResult(callbackType, result);
-//                if (result.getDevice().getAddress().equals("41:67:08:9E:29:6F")) {
-//
-//                    ScanCallback scanCallbackStopped = new ScanCallback() {
-//                        @Override
-//                        public void onScanResult(int callbackType, ScanResult result) {
-//                            super.onScanResult(callbackType, result);
-//                            debug("scanCallbackStopped onScanResult");
-//                        }
-//                    };
-//                    bluetoothLeScanner.stopScan(scanCallbackStopped);
-//                    result.getDevice().createBond();
-//                }
                 debug("onScanResult " + result.getDevice().getAddress() + " " + result.getDevice().getName());
                 ScanCallback scanCallbackStopped = new ScanCallback() {
                     @Override
@@ -484,24 +391,18 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         List<ScanFilter> scanFilters = new ArrayList<>();
         ScanFilter scanFilter = new ScanFilter.Builder()
-//                .setDeviceName("DESKTOP-4NAPAOI")
-                .setDeviceAddress("41:67:08:9E:29:6F")
-//                .setServiceUuid(ParcelUuid.fromString("00001812-0000-1000-8000-00805F9B34FB"))
+                .setDeviceAddress("40:24:B2:41:31:77")
                 .build();
         scanFilters.add(scanFilter);
 
         ScanSettings scanSettings = new ScanSettings.Builder()
                 .setScanMode(ScanSettings.SCAN_MODE_LOW_POWER).build();
-
-//        bluetoothLeScanner.startScan(leScanCallback);
-//        bluetoothLeScanner.startScan(scanFilters, scanSettings, leScanCallback);
         bluetoothLeScanner.startScan(null, scanSettings, leScanCallback);
 
     }
 
     @SuppressLint("MissingPermission")
     private void startBluetoothDiscovery() {
-//        this.registerReceiver(bluetoothScanReceiver, new IntentFilter(BluetoothDevice.ACTION_BOND_STATE_CHANGED));
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(BluetoothDevice.ACTION_FOUND);
         intentFilter.addAction(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
@@ -523,10 +424,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 if (BluetoothDevice.ACTION_FOUND.equals(action)) {
                     BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                     String deviceName = device.getName();
-                    String deviceHardwareAddress = device.getAddress(); // MAC address
+                    String deviceHardwareAddress = device.getAddress();
                     debug(deviceName + ", " + deviceHardwareAddress);
 
-                    if (deviceName.equals("DESKTOP-4NAPAOI")) {
+                    if (deviceName.equals("XGIMI MOGO Pro+")) {
                         device.createBond();
                     }
                 }
@@ -535,10 +436,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     int bondState = intent.getIntExtra(BluetoothDevice.EXTRA_BOND_STATE, -1);
                     if (bondState == BluetoothDevice.BOND_BONDED) {
                         String deviceName = device.getName();
-                        String deviceHardwareAddress = device.getAddress(); // MAC address
+                        String deviceHardwareAddress = device.getAddress();
                         debug("Bonding completed with " + deviceName + ", " + deviceHardwareAddress);
                         populateBondedDevices();
-//                        bluetoothAdapter.getProfileProxy(MainActivity.this, MainActivity.this, BluetoothProfile.HID_DEVICE);
                     }
                 }
             }
@@ -586,14 +486,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         CompanionDeviceManager companionDeviceManager = getSystemService(CompanionDeviceManager.class);
 
         BluetoothDeviceFilter bluetoothDeviceFilter = new BluetoothDeviceFilter.Builder()
-//                .setNamePattern(Pattern.compile("My device"))
-//                .addServiceUuid(new ParcelUuid(new UUID(0x123abcL, -1L)), null)
-//                .addServiceUuid(ParcelUuid.fromString("0000110a-0000-1000-8000-00805f9b34fb"), null)
                 .build();
 
         AssociationRequest pairingRequest = new AssociationRequest.Builder()
                 .addDeviceFilter(bluetoothDeviceFilter)
-//                .setSingleDevice(true)
                 .build();
 
         CompanionDeviceManager.Callback callback = new CompanionDeviceManager.Callback() {
@@ -617,43 +513,13 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     }
 
-//    @SuppressLint("MissingPermission")
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        debug("onActivityResult requestCode" + requestCode + " resultCode=" + resultCode);
-//        if (requestCode == REQUEST_CODE_BT_DEVICE_SELECTED) {
-//            if (resultCode == Activity.RESULT_OK && data != null) {
-//                BluetoothDevice deviceToPair = data.getParcelableExtra(CompanionDeviceManager.EXTRA_DEVICE);
-//                if (deviceToPair != null) {
-//
-//                    IntentFilter intentFilter = new IntentFilter();
-//                    intentFilter.addAction(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
-//                    registerReceiver(getBroadcastReceiver(), intentFilter);
-//
-//                    debug("will now pair with " + deviceToPair.getName());
-//                    deviceToPair.createBond();
-//                }
-//            }
-//
-//        }
-//        if (requestCode == REQUEST_CODE_NOTIFICATION_TEST) {
-//            debug("NOTIFICATION!");
-//        }
-//    }
-
-//    static int x = 0;
-//    static int y = 0;
 
     @SuppressLint({"WrongConstant", "ClickableViewAccessibility"})
     private void assignButtonActions() {
         Button btnPower = findViewById(R.id.btnPower);
         Button btnMenu = findViewById(R.id.btnMenu);
-
         Button btnPair = findViewById(R.id.btnPair);
-
         btnPair.setOnClickListener(this::pairBtnAction);
-
         Button btnLeft = findViewById(R.id.btnLeft);
         Button btnRight = findViewById(R.id.btnRight);
         Button btnUp = findViewById(R.id.btnUp);
@@ -686,7 +552,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         buttons.add(btnForward);
         buttons.add(swtConnectMouse);
 
-        //TESTING
         buttons.add(btnCurLeft);
         buttons.add(btnCurClick);
         buttons.add(btnCurRight);
@@ -709,65 +574,42 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
 
         setButtonsEnabled(BluetoothHidService.isRunning);
-
         addRemoteKeyListeners(btnPower, RemoteControlHelper.Key.POWER);
-
-//        addRemoteKeysListeners(btnSource, RemoteControlHelper.Key.ASSIGN_SELECTION, RemoteControlHelper.Key.MEDIA_SELECT_CD);
-//        addRemoteKeyListeners(btnPair, RemoteControlHelper.Key.MEDIA_SELECT_CD);
-
-//        addKeyBoardListeners(btnSource, 0x91);
-
         addRemoteKeyListeners(btnMenu, RemoteControlHelper.Key.MENU);
-
         addRemoteKeyListeners(btnLeft, RemoteControlHelper.Key.MENU_LEFT);
         addRemoteKeyListeners(btnRight, RemoteControlHelper.Key.MENU_RIGHT);
         addRemoteKeyListeners(btnUp, RemoteControlHelper.Key.MENU_UP);
         addRemoteKeyListeners(btnDown, RemoteControlHelper.Key.MENU_DOWN);
         addRemoteKeyListeners(btnMiddle, RemoteControlHelper.Key.MENU_PICK);
-
         addRemoteKeyListeners(btnBack, RemoteControlHelper.Key.BACK);
         addRemoteKeyListeners(btnHome, RemoteControlHelper.Key.HOME);
-
         addRemoteKeyListeners(btnVolInc, RemoteControlHelper.Key.VOLUME_INC);
         addRemoteKeyListeners(btnVolDec, RemoteControlHelper.Key.VOLUME_DEC);
-
         addRemoteKeyListeners(btnMute, RemoteControlHelper.Key.MUTE);
-
         addRemoteKeyListeners(btnPlayPause, RemoteControlHelper.Key.PLAY_PAUSE);
         addRemoteKeyListeners(btnRewind, RemoteControlHelper.Key.MEDIA_REWIND);
         addRemoteKeyListeners(btnForward, RemoteControlHelper.Key.MEDIA_FAST_FORWARD);
 
 
         txtInput.setOnKeyListener(this::handleInputText);
-//        txtInput.setOnKeyListener(this::handleRealtimeInputText);
-//        txtInput.addTextChangedListener(getKeyTextWatcher());
-
+//
     }
 
-    /*
-    Used only to handle backspace and enter keys
-     */
     private boolean handleInputText(View view, int keyCode, KeyEvent keyEvent) {
         if (keyCode == KeyEvent.KEYCODE_ENTER && keyEvent.getAction() == KeyEvent.ACTION_UP) {
-//            debug("onKey=" + txtInput.getText().toString());
-
             txtInput.getText().chars().forEach(c -> {
-//                debug((char) c + "");
-                if (KeyboardHelper.keyMap.containsKey((char) c)) {// Small case letter
+                if (KeyboardHelper.keyMap.containsKey((char) c)) {
                     KeyboardHelper.sendKeyDown(KeyboardHelper.Modifier.NONE, KeyboardHelper.getKey((char) c));
                     KeyboardHelper.sendKeyUp();
-                } else if (KeyboardHelper.shiftKeyMap.containsKey((char) c)) {// Upper case letter
+                } else if (KeyboardHelper.shiftKeyMap.containsKey((char) c)) {
                     KeyboardHelper.sendKeyDown(KeyboardHelper.Modifier.KEY_MOD_LSHIFT, KeyboardHelper.getShiftKey((char) c));
                     KeyboardHelper.sendKeyUp();
                 }
             });
-//            boolean sent = KeyboardHelper.sendKeyDown(KeyboardHelper.Modifier.NONE, KeyboardHelper.Key.ENTER);
-//            if (sent)
             vibrate();
             return true;
         }
         if (keyCode == KeyEvent.KEYCODE_DEL && keyEvent.getAction() == KeyEvent.ACTION_UP) {
-//            debug("onKey= BACKSPACE");
             boolean sent = KeyboardHelper.sendKeyDown(KeyboardHelper.Modifier.NONE, KeyboardHelper.Key.BACKSPACE);
             KeyboardHelper.sendKeyUp();
             if (sent)
@@ -781,21 +623,16 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         return new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//                debug("beforeTextChanged " + s.toString());
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                debug("onTextChanged start=" + start + " before=" + before + " count=" + count);
-                //This is a backspace
                 boolean sent = false;
                 if (before > count) {
-//                        debug("BACKSPACE");
                     sent = KeyboardHelper.sendKeyDown(KeyboardHelper.Modifier.NONE, KeyboardHelper.Key.BACKSPACE);
                     KeyboardHelper.sendKeyUp();
                 } else if (start + count > 0) {
                     char c = s.charAt(s.length() - 1);
-//                        debug("onTextChanged " + s);
                     if (KeyboardHelper.keyMap.containsKey(c)) {// Small case letter
                         sent = KeyboardHelper.sendKeyDown(KeyboardHelper.Modifier.NONE, KeyboardHelper.getKey(c));
                         KeyboardHelper.sendKeyUp();
@@ -810,17 +647,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
             @Override
             public void afterTextChanged(Editable s) {
-//                debug("afterTextChanged " + s.toString());
             }
         };
     }
 
-    /*
-    Used only to handle backspace and enter keys
-     */
     private boolean handleRealtimeInputText(View view, int keyCode, KeyEvent keyEvent) {
         if (keyCode == KeyEvent.KEYCODE_ENTER && keyEvent.getAction() == KeyEvent.ACTION_UP) {
-//            debug("onKey=" + txtInput.getText().toString());
             boolean sent = KeyboardHelper.sendKeyDown(KeyboardHelper.Modifier.NONE, KeyboardHelper.Key.ENTER);
             KeyboardHelper.sendKeyUp();
             if (sent)
@@ -828,7 +660,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             return true;
         }
         if (keyCode == KeyEvent.KEYCODE_DEL && keyEvent.getAction() == KeyEvent.ACTION_UP) {
-//            debug("onKey= BACKSPACE");
             boolean sent = KeyboardHelper.sendKeyDown(KeyboardHelper.Modifier.NONE, KeyboardHelper.Key.BACKSPACE);
             KeyboardHelper.sendKeyUp();
             if (sent)
@@ -853,7 +684,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         }
 
         button.setOnTouchListener((view, motionEvent) -> {
-//            debug("onTouch " + motionEvent.getAction());
             if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
                 boolean sent = KeyboardHelper.sendKeyDown(modifier, key);
                 if (sent)
@@ -936,7 +766,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                         .setSmallIcon(R.drawable.remote_control)
                         .setContentIntent(pendingIntent)
                         .setOngoing(true)
-//                        .setCustomContentView(new RemoteViews(getPackageName(), R.layout.test))
                         .setCustomBigContentView(remoteViews)
                         .build();
 

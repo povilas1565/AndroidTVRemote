@@ -24,13 +24,11 @@ import androidx.core.app.NotificationCompat;
 
 public class BluetoothHidService extends Service implements BluetoothProfile.ServiceListener {
     private static final String TAG = "BluetoothHIDService";
-
     static final String ACTION_PLAY_PAUSE = "ACTION_PLAY_PAUSE";
     static final String ACTION_VOL_INC = "ACTION_VOL_INC";
     static final String ACTION_VOL_DEC = "ACTION_VOL_DEC";
     static final String ACTION_MUTE = "ACTION_MUTE";
     static final String ACTION_POWER = "ACTION_POWER";
-
     static final String ACTION_REWIND = "ACTION_REWIND";
     static final String ACTION_FORWARD = "ACTION_FORWARD";
     static final String ACTION_UP = "ACTION_UP";
@@ -203,7 +201,6 @@ public class BluetoothHidService extends Service implements BluetoothProfile.Ser
         bluetoothAdapter.closeProfileProxy(BluetoothProfile.HID_DEVICE, bluetoothHidDevice);
         isRunning = false;
 
-        //Send notification to activity
         sendMessage(WHAT.BLUETOOTH_DISCONNECTED);
     }
 
@@ -218,7 +215,6 @@ public class BluetoothHidService extends Service implements BluetoothProfile.Ser
     public int onStartCommand(Intent intent, int flags, int startId) {
         debug("onStartCommand");
 
-        // If we get killed, after returning from here, restart
         return START_STICKY;
     }
 
@@ -289,7 +285,7 @@ public class BluetoothHidService extends Service implements BluetoothProfile.Ser
                 }
             };
 
-//            bluetoothHidDevice.registerApp(Constants.SDP_RECORD, null, Constants.QOS_OUT, Runnable::run, callback);
+
             bluetoothHidDevice.registerApp(Constants.SDP_RECORD, null, null, Runnable::run, callback);
 
         }
@@ -298,7 +294,6 @@ public class BluetoothHidService extends Service implements BluetoothProfile.Ser
     @Override
     public void onServiceDisconnected(int profile) {
         if (profile == BluetoothProfile.HID_DEVICE) {
-//            bluetoothHidDevice = null;
             debug("HID onServiceDisconnected");
         }
     }
