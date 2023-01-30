@@ -1,0 +1,41 @@
+<resources>
+    <string name="app_name">AndroidTVRemote</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_fullscreen">FullscreenActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="bonded_devices">Paired Devices</string>
+    <string name="connect">Connect</string>
+    <string name="mouse">Air Mouse🖱</string>
+
+    <string name="btn_left">◀️</string>
+    <string name="btn_right">▶️</string>
+    <string name="btn_up">🔼</string>
+    <string name="btn_down">🔽</string>
+    <string name="btn_middle">⏺️</string>
+
+    <string name="btn_back">🔙</string>
+    <string name="btn_home">🏠</string>
+    <string name="btn_power">⛔</string>
+    <string name="btn_mute">🔇</string>
+    <string name="btn_menu">☰</string>
+    <string name="btn_gear">⚙️</string>
+    <string name="btn_vol_up">🔊</string>
+    <string name="btn_vol_down">🔉</string>
+    <string name="btn_play_pause">⏯️</string>
+    <string name="btn_rewind">⏪</string>
+    <string name="btn_forward">⏩</string>
+
+    <string name="play_pause">Play/Pause</string>
+    <string name="vol_inc">Vol+</string>
+    <string name="vol_dec">Vol-</string>
+    <string name="type_text_here">⌨ Type text here to send</string>
+    <string name="cursor_sensitivity">Cursor Sensitivity</string>
+    <string name="btn_pair">📶</string>
+    <string name="button1">b1</string>
+    <string name="button2">b2</string>
+    <string name="button3">b3</string>
+    <string name="button4">b4</string>
+    <string name="button5">b5</string>
+
+</resources>
