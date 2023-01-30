@@ -1,17 +1,15 @@
-I wanted to create a bluetooth remote application so that I can control my Android TV.
+# AndroidTVRemote
+Создание удаленное приложение со связью через Bluetooth для управления проектором XGIMI MOGO Pro+ на ОС Android TV.
 
-After doing intensive search on the web, I found lots of sample code, but there is no ready-built app in the play store.
+# Структура приложения
+Приложение создано на основе найденных примеров фрагментов, также с масштабной оптимизацией и протестировано на Android 12(API 32); используется Android HID API для имитации периферийного устройства Bluetooth.
 
-I decided to build this app using the sample snippets I found, with massive optimization also, built and tested on
-Android 12 (MIUI).
+# На каких устройствах возможен запуск?
+Запуск ведётся на всех устройствах с поддержкой Android 8-9(API 28) и до новейших Android 13(API 33)
 
-I also released the code to the community for more optimization from anyone.
+# Дополнительные опции
+Ввод с клавиатуры также поддерживается, просто введите что-либо в текстовое поле и нажмите Enter, чтобы отправить его.
 
-This app is using the Android HID API to simulate a Bluetooth peripheral.
+# Запуск приложения
+Сначала выполняется сопряжение устройства в обычных настройках Android Bluetooth, а затем открывается приложение и выбирается сопряженное устройство, затем нажимается кнопка "Подключиться".
 
-It is still not working on Windows for some reason, but works on all android devices.
-
-Keyboard input is also supported, just type anything in the textbox and hit enter to submit it.
-
-First you pair you device in the normal Android Bluetooth settings, and then open the app and select a paired device,
-then click on the "Connect" button.
