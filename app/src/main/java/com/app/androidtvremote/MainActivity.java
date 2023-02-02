@@ -391,7 +391,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         List<ScanFilter> scanFilters = new ArrayList<>();
         ScanFilter scanFilter = new ScanFilter.Builder()
-                .setDeviceAddress("40:24:B2:41:31:77")
+                .setDeviceAddress("FD:E9:85:78:D6:D7")
                 .build();
         scanFilters.add(scanFilter);
 
@@ -427,7 +427,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     String deviceHardwareAddress = device.getAddress();
                     debug(deviceName + ", " + deviceHardwareAddress);
 
-                    if (deviceName.equals("XGIMI MOGO Pro+")) {
+                    if (deviceName.equals("CHAINWAY R6")) {
                         device.createBond();
                     }
                 }
@@ -633,7 +633,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     KeyboardHelper.sendKeyUp();
                 } else if (start + count > 0) {
                     char c = s.charAt(s.length() - 1);
-                    if (KeyboardHelper.keyMap.containsKey(c)) {// Small case letter
+                    if (KeyboardHelper.keyMap.containsKey(c)) {
                         sent = KeyboardHelper.sendKeyDown(KeyboardHelper.Modifier.NONE, KeyboardHelper.getKey(c));
                         KeyboardHelper.sendKeyUp();
                     } else if (KeyboardHelper.shiftKeyMap.containsKey(c)) {// Upper case letter
